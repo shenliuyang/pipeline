@@ -1,19 +1,9 @@
-pipeline {
-    agent any
-    tools {
-        jdk 'jdk-1.8' 
-    }
-    stages {
-        stage('Preparation') {
-            steps {
-                git  url: 'https://github.com/shenliuyang/appsugar-web-archetypes-kotlin.git'
-            }
-        }
-        stage('Build') {
-            steps {
-				sh 'pwd'
-                sh 'ls'
-            }
-        }
-    }
+node{
+	stage('Clone repository'){
+		git url: 'git@github.com:shenliuyang/appsugar-web-archetypes-kotlin.git',credentialsId: '2b721860-d25b-4f0f-82f4-44ec02a9f933'
+	}
+	stage('Build project'){
+		sh 'git checkout master'
+		sh 'gradlew clean build'
+	}
 }
