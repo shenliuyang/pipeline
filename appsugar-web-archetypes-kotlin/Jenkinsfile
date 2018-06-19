@@ -11,8 +11,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'git checkout master'
-                sh './gradlew  build -x test '
+				sh 'pwd'
+                sh 'ls'
             }
         }
     }
