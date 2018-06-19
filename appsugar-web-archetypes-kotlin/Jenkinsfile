@@ -1,9 +1,11 @@
 node{
-	stage('Clone repository'){
-		git url: 'git@github.com:shenliuyang/appsugar-web-archetypes-kotlin.git',credentialsId: '2b721860-d25b-4f0f-82f4-44ec02a9f933'
-	}
-	stage('Build project'){
-		sh 'git checkout master'
-		sh 'gradlew clean build'
+	dir('appsugar-web-archetypes-kotlin'){
+		stage('Clone repository'){
+			git url: 'git@github.com:shenliuyang/appsugar-web-archetypes-kotlin.git',credentialsId: '2b721860-d25b-4f0f-82f4-44ec02a9f933'
+		}
+		stage('Build project'){
+			sh 'git checkout master'
+			sh 'appsugar-web-archetypes-kotlin/gradlew clean build'
+		}
 	}
 }
