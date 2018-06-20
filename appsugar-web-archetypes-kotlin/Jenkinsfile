@@ -1,6 +1,19 @@
 node{
+	jdk = tool name: 'jdk-1.8'
+	env.JAVA_HOME = "${jdk}"
+	echo "jdk installation path is: ${jdk}"
 	dir('appsugar-web-archetypes-kotlin'){
-		git url: 'git@github.com:shenliuyang/appsugar-web-archetypes-kotlin.git',credentialsId: '2b721860-d25b-4f0f-82f4-44ec02a9f933'
+	    stage('Preparation'){
+		    git url: 'git@github.com:shenliuyang/appsugar-web-archetypes-kotlin.git',credentialsId: '2b721860-d25b-4f0f-82f4-44ec02a9f933'
+	    }
+		stage('Build project'){
+            sh('./gradlew  build -x test')
+		}
+		def customImage
+        stage('Build docker image'){
+            customImage = docker.build("my-test-image:${env.BUILD_ID}",'-f ./dockerfiles/InfrastructureDockerfile ./')
+        }
 	}
-	sh('appsugar-web-archetypes-kotlin/gradlew clean build')
+	
+	
 }
