@@ -11,9 +11,8 @@ node{
 		}
 		def customImage
         stage('Build docker image'){
-            customImage = docker.build("my-test-image:${env.BUILD_ID}",'-f ./dockerfiles/InfrastructureDockerfile ./')
+            def nameOfImage = 'appsugar-web-archetypes-kotlin-infrastructure'
+            customImage = docker.build("${nameOfImage}:${env.BUILD_ID}","-t ${nameOfImage}:latest -f ./dockerfiles/InfrastructureDockerfile ./")
         }
 	}
-	
-	
 }
