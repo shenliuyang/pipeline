@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    image: docker.bj1580.top/exposed_app:88
+    image: docker.bj1580.top/exposed_app:89
     deploy:
       mode: replicated
       replicas: 3
