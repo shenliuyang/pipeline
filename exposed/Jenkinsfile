@@ -38,7 +38,7 @@ node{
             sh("git commit -am 'jenkins pipeline change image to ${imageNameVersion}'")
             sh("git push origin master")
         }
-        stage('Deploy build'){
+        stage('Deploy fire'){
             def desFilePath = "deploy${env.BUILD_ID}.yml"
             sh("scp ${filePath} rancher@172.16.11.7:/home/rancher/${desFilePath}")
             sh("ssh rancher@172.16.11.7 'docker stack deploy --with-registry-auth -c ${desFilePath}  exposed'")
