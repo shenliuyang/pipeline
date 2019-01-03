@@ -4,7 +4,7 @@ services:
     image: docker.bj1580.top/exposed_app:88
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 3
       restart_policy:
         condition: on-failure
       resources:
