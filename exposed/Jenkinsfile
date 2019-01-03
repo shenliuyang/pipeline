@@ -20,7 +20,7 @@ node{
         }
         def customImage
         stage('Build docker image'){
-            customImage = docker.build("${imageNameVersion}","-t ${imageNamePrefix}latest -f ./exposed/app ./")
+            customImage = docker.build("${imageNameVersion}","-t ${imageNamePrefix}latest -f ./exposed/Dockerfile ./")
             sh("rm -rf ./libs")
         }
         stage('Push image to Repository'){
