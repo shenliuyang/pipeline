@@ -1,5 +1,5 @@
 FROM docker.bj1580.top/exposed_base:60
 WORKDIR /root
-ADD  ../exposed/appsugar-exposed-lib/build/libs/lib-dynamic /root/lib-dynamic
-ADD  ../exposed/appsugar-exposed-lib/build/libs/app.jar /root/app.jar
+ADD  libs/lib-dynamic /root/lib-dynamic
+ADD  libs/app.jar /root/app.jar
 ENTRYPOINT java  -jar app.jar

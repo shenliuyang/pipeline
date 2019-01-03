@@ -16,10 +16,12 @@ node{
     dir("exposed-deploy"){
         stage('Deploy prepare'){
             git url: 'git@github.com:shenliuyang/pipeline.git',credentialsId: '2b721860-d25b-4f0f-82f4-44ec02a9f933'
+            sh("cp ../exposed/appsugar-exposed-lib/build/libs ./libs")
         }
         def customImage
         stage('Build docker image'){
-            customImage = docker.build("${imageNameVersion}","-t ${imageNamePrefix}latest -f ./docker/app ./")
+            customImage = docker.build("${imageNameVersion}","-t ${imageNamePrefix}latest -f ./exposed/app ./")
+            sh("rm -rf ./libs")
         }
         stage('Push image to Repository'){
             docker.withRegistry('https://docker.bj1580.top', 'docker.bj1580.top') {
