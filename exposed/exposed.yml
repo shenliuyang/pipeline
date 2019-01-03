@@ -1,0 +1,15 @@
+version: "3"
+services:
+  web:
+    image: dynamic_replace
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "1"
+          memory: 200M
+    ports:
+      - "80:80"
