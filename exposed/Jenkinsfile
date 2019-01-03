@@ -2,17 +2,17 @@ node{
 	jdk = tool name: 'jdk-1.8'
 	env.JAVA_HOME = "${jdk}"
 	echo "jdk installation path is: ${jdk}"
-	dir('appsugar-web-archetypes-kotlin'){
+	dir('exposed'){
 	    stage('Preparation'){
-		    git url: 'git@github.com:shenliuyang/appsugar-web-archetypes-kotlin.git',credentialsId: '2b721860-d25b-4f0f-82f4-44ec02a9f933'
+		    git url: 'git@github.com:shenliuyang/Exposed.git',credentialsId: '2b721860-d25b-4f0f-82f4-44ec02a9f933'
 	    }
 		stage('Build project'){
-            sh('./gradlew clean build')
+            sh('bash ./gradlew clean build')
 		}
 		def customImage
         stage('Build docker image'){
-            def nameOfImage = 'changeme-app'
-            customImage = docker.build("${nameOfImage}:${env.BUILD_ID}","-t ${nameOfImage}:latest -f ./dockerfiles/app ./")
+            def nameOfImage = 'docker.bj1580.top/exposed_app'
+            customImage = docker.build("${nameOfImage}:${env.BUILD_ID}","-t ${nameOfImage}:latest -f ./docker/app ./")
         }
 		stage('Push image to Repository'){
             docker.withRegistry('https://docker.bj1580.top', 'docker.bj1580.top') {

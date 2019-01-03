@@ -1,4 +1,4 @@
-from shenliuyang/exposed_base:1
+FROM docker.bj1580.top/exposed_base:60
 WORKDIR /root
 ADD  appsugar-exposed-lib/build/libs/lib-dynamic /root/lib-dynamic
 ADD  appsugar-exposed-lib/build/libs/app.jar /root/app.jar
