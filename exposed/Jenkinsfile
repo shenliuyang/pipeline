@@ -2,6 +2,9 @@ node{
 	jdk = tool name: 'jdk-1.8'
 	env.JAVA_HOME = "${jdk}"
 	echo "jdk installation path is: ${jdk}"
+	def imageNamePrefix = 'docker.bj1580.top/exposed_app:'
+	def imageNameVersion = imageNamePrefix + env.BUILD_ID
+
 	dir('exposed'){
 	    stage('Preparation'){
 		    git url: 'git@github.com:shenliuyang/Exposed.git',credentialsId: '2b721860-d25b-4f0f-82f4-44ec02a9f933'
@@ -9,16 +12,35 @@ node{
 		stage('Build project'){
             sh('bash ./gradlew clean build')
 		}
-		def customImage
-        stage('Build docker image'){
-            def nameOfImage = 'docker.bj1580.top/exposed_app'
-            customImage = docker.build("${nameOfImage}:${env.BUILD_ID}","-t ${nameOfImage}:latest -f ./docker/app ./")
+	}
+    dir("exposed-deploy"){
+        stage('Deploy prepare'){
+            git url: 'git@github.com:shenliuyang/pipeline.git',credentialsId: '2b721860-d25b-4f0f-82f4-44ec02a9f933'
         }
-		stage('Push image to Repository'){
+        def customImage
+        stage('Build docker image'){
+            customImage = docker.build("${imageNameVersion}","-t ${imageNamePrefix}latest -f ./docker/app ./")
+        }
+        stage('Push image to Repository'){
             docker.withRegistry('https://docker.bj1580.top', 'docker.bj1580.top') {
                 customImage.push()
                 customImage.push('latest')
             }
         }
-	}
+        def filePath = "exposed/deploy.yml"
+        stage('Deploy git commmit'){
+            def yaml = readYaml file: filePath
+            yaml.services.web.image = imageNameVersion
+            sh("rm ${filePath}")
+            writeYaml file:filePath, data:yaml
+            sh("git commit -am 'jenkins pipeline change image to ${imageNameVersion}'")
+            sh("git push")
+        }
+        stage('Deploy build'){
+            def desFilePath = "deploy${env.BUILD_ID}.yml"
+            sh("scp ${filePath} rancher@172.16.11.7:/home/rancher/${desFilePath}")
+            sh("ssh rancher@172.16.11.7 'docker stack deploy --with-registry-auth -c ${desFilePath}  exposed'")
+            sh("ssh rancher@172.16.11.7 'rm   ${desFilePath}'")
+        }
+    }
 }
