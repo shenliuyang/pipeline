@@ -36,6 +36,7 @@ node{
             sh("rm ${filePath}")
             writeYaml file:filePath, data:yaml
             sh("git commit -am 'jenkins pipeline change image to ${imageNameVersion}'")
+            sh("git pull")
             sh("git push")
         }
         stage('Deploy build'){
