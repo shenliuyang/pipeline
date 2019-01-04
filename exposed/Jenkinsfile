@@ -15,7 +15,7 @@ node{
 	}
     dir("exposed-deploy"){
         stage('Deploy prepare'){
-            git url: 'git@github.com:shenliuyang/pipeline.git',credentialsId: '2b721860-d25b-4f0f-82f4-44ec02a9f933'
+            git url: 'git@github.com:shenliuyang/pipeline.git',credentialsId: '2b721860-d25b-4f0f-82f4-44ec02a9f933',branch: 'master'
             sh("cp -R ../exposed/appsugar-exposed-lib/build/libs ./libs")
         }
         def customImage
@@ -39,7 +39,7 @@ node{
             sh("git push origin master")
         }
         stage('Deploy fire'){
-            def desFilePath = "deploy${env.BUILD_ID}.yml"
+            def desFilePath = "deploy-exposed-app${env.BUILD_ID}.yml"
             sh("scp ${filePath} rancher@172.16.11.7:/home/rancher/${desFilePath}")
             sh("ssh rancher@172.16.11.7 'docker stack deploy --with-registry-auth -c ${desFilePath}  exposed'")
             sh("ssh rancher@172.16.11.7 'rm   ${desFilePath}'")
