@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    image: docker.bj1580.top/exposed_app:104
+    image: docker.bj1580.top/exposed_app:105
     environment:
       - logbackFile=logback_prod.xml
     deploy:
