@@ -1,9 +1,9 @@
 version: '3'
 services:
   web:
-    image: docker.bj1580.top/exposed_app:101
+    image: docker.bj1580.top/exposed_app:103
     environment:
-      - logback.configurationFile: logback_prod.xml
+    - logback.configurationFile: logback_prod.xml
     deploy:
       mode: replicated
       replicas: 1
