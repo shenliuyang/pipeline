@@ -1,4 +1,4 @@
-FROM  openjdk:8u242-jdk-slim as  lib-base
+FROM  openjdk:8u212-jdk-alpine as  lib-base
 ADD  lib /root/lib
 
 FROM  lib-base as dynamic-base
