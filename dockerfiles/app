@@ -1,0 +1,10 @@
+FROM  openjdk:8u242-jdk-slim as  lib-base
+ADD  build/libs/lib /root/lib
+
+FROM  lib-base as dynamic-base
+ADD  build/libs/lib-dynamic /root/lib-dynamic
+
+FROM dynamic-base
+ADD build/libs/app.jar /root/app.jar
+WORKDIR /root
+ENTRYPOINT java  -jar app.jar
